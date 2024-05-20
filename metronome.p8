@@ -57,6 +57,7 @@ function _update()
     end
 
     if show_beats 
+    and beats < 100
     and beats % 4 == 0
     and old_beats != beats 
     then
@@ -64,7 +65,7 @@ function _update()
       sfx(0)
     end
 
-    if btnp(🅾️) or btnp(❎) then
+    if btnp(🅾️) or btnp(❎) or beats > 107 then
       game_state = 'over'
       if beats == 100 then
         player_state = 'won'
@@ -85,11 +86,11 @@ end
 
 function print_number_centered(number)
   if number < 100 then
-    print_position_x = 60
+    print_position_x = 56
   else
-    print_position_x = 58
+    print_position_x = 52
   end
-  print(number, print_position_x, 61)
+  print("\^t\^w" .. number, print_position_x, 61)
 end
 
 function _draw()
@@ -97,9 +98,11 @@ function _draw()
   if game_state == 'intro' then
     -- print instructions
     print("the counter will count up", 14, 10)
-    print("press 🅾️ or ❎\n", 36, 40)
-    print("when the counter reaches 100", 8, 50)
-    print("press 🅾️ or ❎ to start", 18, 100)
+    print("and beep every 4 counts", 18, 20)
+    print("press 🅾️ or ❎\n", 36, 50)
+    print("when you think the counter", 12, 60)
+    print("has reached 100", 34, 70)
+    print("press 🅾️ or ❎ to start", 18, 110)
   elseif game_state == 'running' then
     if show_beats then
       print_number_centered(beats)
