@@ -36,6 +36,12 @@ function _init()
   -- possible states: "unknown", "won", "lost"
   player_state = 'unknown'
 
+  WHITE = 7
+  RED = 8
+  ORANGE = 9
+  YELLOW = 10
+  GREEN = 11
+
   reset_game()
 end
 
@@ -84,19 +90,20 @@ function _update()
   end
 end
 
-function print_number_centered(number)
+function print_number_centered(number, color)
   if number < 100 then
     print_position_x = 56
   else
     print_position_x = 52
   end
-  print("\^t\^w" .. number, print_position_x, 61)
+  print("\^t\^w" .. number, print_position_x, 61, color)
 end
 
 function _draw()
   cls()
   if game_state == 'intro' then
     -- print instructions
+    color(WHITE)
     print("the counter will count up", 14, 10)
     print("and beep every 4 counts", 18, 20)
     print("press 🅾️ or ❎\n", 36, 50)
@@ -105,15 +112,21 @@ function _draw()
     print("press 🅾️ or ❎ to start", 18, 110)
   elseif game_state == 'running' then
     if show_beats then
-      print_number_centered(beats)
+      if beats % 4 == 0 then
+        color = ORANGE
+      else
+        color = YELLOW
+      end
+      print_number_centered(beats, color)
     end
   elseif game_state == 'over' then
     -- print lost or won
-    print_number_centered(beats)
     if player_state == 'won' then
-      print("you won", 50, 80)
+      print_number_centered(beats, GREEN)
+      print("you won", 50, 90)
     else
-      print("you lost", 48, 80)
+      print_number_centered(beats, RED)
+      print("you lost", 48, 90)
     end
     print("press 🅾️ or ❎ to play again", 8, 100)
   end
